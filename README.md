@@ -1,0 +1,1 @@
+**Readers** is a social networking web application focused on reading and books. It provides a space where users can create personal profiles, showcase the books they own, and share reviews and recommendations with others. The platform aims to connect readers, encourage discussion, and promote the discovery of new books through a community-driven experience.

@@ -1,0 +1,65 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<h1>Book List</h1>
+
+<div class="book-container">
+    {% for book in books %}
+    <a href="{% url 'book_detail' book.id %}" class="book-link">
+        <div class="book-card">
+
+            {% if book.cover %}
+                <img src="{{ book.cover.url }}" class="book-cover">
+            {% endif %}
+
+            <div class="book-info">
+                <h2>{{ book.title }}</h2>
+                <p>{{ book.description }}</p>
+            </div>
+
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+<style>
+.book-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.book-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 15px;
+
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.book-cover {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.book-info h2 {
+    margin: 0;
+}
+
+.book-info p {
+    margin-top: 5px;
+    color: #555;
+}
+.book-link {
+    text-decoration: none;
+    color: inherit;
+}
+</style>
+
+{% endblock %}
