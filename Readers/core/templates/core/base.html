@@ -1,75 +1,108 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}MyBooks{% endblock %}</title>
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Readers{% endblock %}</title>
+ 
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+ 
+  {% block extra_css %}{% endblock %}
 </head>
 <body>
-
-    <!-- NAVBAR (simple) -->
-    <nav class="navbar navbar-expand-lg custom-navbar">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="/">Readers</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarScroll">
-            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/books">Books</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Link
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">Link</a>
-              </li>
-            </ul>
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-            {% if user.is_authenticated %}
-              <span class="navbar-text me-2">{{ user.username }}</span>
+ 
+  <nav class="navbar navbar-expand-lg readers-navbar">
+    <div class="container">
+ 
+      <a class="navbar-brand readers-brand" href="{% url 'home' %}">
+        <div class="brand-icon">
+          <i class="ti ti-book-2"></i>
+        </div>
+        Readers
+      </a>
+ 
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Abrir menú">
+        <i class="ti ti-menu-2" style="color:#faf7f2;font-size:20px;"></i>
+      </button>
+ 
+      <div class="collapse navbar-collapse" id="navbarMain">
+ 
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link readers-link {% block nav_home %}{% endblock %}" href="{% url 'home' %}">
+              <i class="ti ti-home me-1"></i>Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link readers-link {% block nav_books %}{% endblock %}" href="{% url 'books' %}">
+              <i class="ti ti-books me-1"></i>Explorar libros
+            </a>
+          </li>
+        </ul>
+ 
+        <form class="d-flex me-3" role="search" method="get" action="{% url 'books' %}">
+          <div class="search-wrap">
+            <i class="ti ti-search search-icon"></i>
+            <input class="form-control search-input" type="search" name="q" placeholder="Buscar libros o lectores..." value="{{ request.GET.q }}">
+          </div>
+        </form>
+ 
+        {% if user.is_authenticated %}
+        <div class="dropdown">
+          <div class="nav-avatar" data-bs-toggle="dropdown" aria-expanded="false" role="button" aria-label="Menú de usuario">
+            {{ user.username|first|upper }}
+          </div>
+          <ul class="dropdown-menu dropdown-menu-end readers-dropdown">
+            <li>
+              <span class="dropdown-item-text readers-dropdown-user">
+                <span class="dropdown-username">{{ user.username }}</span>
+                <span class="dropdown-email">{{ user.email }}</span>
+              </span>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item readers-dropdown-item" href="{% url 'profile' user.username %}">
+                <i class="ti ti-user me-2"></i>Mi perfil
+              </a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
               <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-outline-danger ms-2">Cerrar sesión</button>
+                <button type="submit" class="dropdown-item readers-dropdown-item text-danger">
+                  <i class="ti ti-logout me-2"></i>Cerrar sesión
+                </button>
               </form>
-            {% else %}
-              <a href="{% url 'login' %}" class="btn btn-outline-secondary ms-2">Iniciar sesión</a>
-            {% endif %}
-          </div>
+            </li>
+          </ul>
         </div>
-      </nav>
-    <!-- CONTENIDO -->
-    <div class="container mt-4">
-        {% block content %}
-        {% endblock %}
+        {% else %}
+        <a href="{% url 'login' %}" class="btn readers-btn-login">Iniciar sesión</a>
+        {% endif %}
+ 
+      </div>
     </div>
-    <style>
-        .custom-navbar {
-            background-color: #f6ead4;
-        }
-    </style>
-
-    <!-- Bootstrap JS (opcional pero recomendado) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+  </nav>
+ 
+  <main class="readers-main">
+    {% block content %}{% endblock %}
+  </main>
+ 
+  <footer class="readers-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-brand"><i class="ti ti-book-2 me-1"></i>Readers</span>
+        <span class="footer-copy">© 2026 Readers. Todos los derechos reservados.</span>
+      </div>
+    </div>
+  </footer>
+ 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+ 
+  {% block extra_js %}{% endblock %}
 </body>
 </html>

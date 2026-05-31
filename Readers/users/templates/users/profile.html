@@ -1,36 +1,27 @@
+{% extends 'core/base.html' %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/main.css' %}">
-
-<div class="navbar">
-  <div class="nav-logo">
-    <div class="nav-logo-icon"><i class="ti ti-book-2" aria-hidden="true"></i></div>
-    <span class="nav-logo-text">Readers</span>
-  </div>
-  <div class="nav-links">
-    <a href="#">Inicio</a>
-    <a href="#">Explorar</a>
-    <a href="#">Clubes</a>
-  </div>
-  <div class="nav-avatar">L</div>
-</div>
-
+ 
+{% block title %}@{{ profile_user.username }} — Readers{% endblock %}
+ 
+{% block content %}
+ 
 <div class="profile-hero">
   <div class="profile-inner">
     <div class="avatar-wrap">
-      <div class="avatar">L</div>
+      <div class="avatar">{{ profile_user.username|first|upper }}</div>
       <div class="avatar-edit"><i class="ti ti-camera" aria-hidden="true"></i></div>
     </div>
     <div class="profile-info">
-        <div class="profile-name">{{ profile_user.get_full_name|default:profile_user.username }}</div>
-        <div class="profile-username">@{{ profile_user.username }}</div>
-        <div class="profile-bio">Amante de la ciencia ficción y el realismo mágico. Siempre con un libro en la mano y otro en la lista.</div>
+      <div class="profile-name">{{ profile_user.get_full_name|default:profile_user.username }}</div>
+      <div class="profile-username">@{{ profile_user.username }}</div>
+      <div class="profile-bio">Amante de la ciencia ficción y el realismo mágico. Siempre con un libro en la mano y otro en la lista.</div>
     </div>
     <div class="profile-actions">
       <button class="btn-edit">Editar perfil</button>
     </div>
   </div>
 </div>
-
+ 
 <div class="stats-bar">
   <div class="stats-inner">
     <div class="stat"><div class="stat-n">34</div><div class="stat-l">Leídos</div></div>
@@ -40,7 +31,7 @@
     <div class="stat"><div class="stat-n">140</div><div class="stat-l">Seguidores</div></div>
   </div>
 </div>
-
+ 
 <div style="background:#faf7f2;padding:0 2rem;">
   <div class="tabs">
     <div class="tab active" data-tab="biblioteca">Biblioteca</div>
@@ -48,10 +39,10 @@
     <div class="tab" data-tab="porLeer">Por leer</div>
   </div>
 </div>
-
+ 
 <div style="padding:0 2rem;">
   <div class="content">
-
+ 
     <div class="tab-panel active" id="tab-biblioteca">
       <div class="books-grid">
         <div class="book-card">
@@ -91,7 +82,7 @@
         </div>
       </div>
     </div>
-
+ 
     <div class="tab-panel" id="tab-resenas">
       <div class="reviews-list">
         <div class="review-card">
@@ -124,7 +115,7 @@
         </div>
       </div>
     </div>
-
+ 
     <div class="tab-panel" id="tab-porLeer">
       <div class="books-grid">
         <div class="book-card">
@@ -150,10 +141,13 @@
         </div>
       </div>
     </div>
-
+ 
   </div>
 </div>
-
+ 
+{% endblock %}
+ 
+{% block extra_js %}
 <script>
   document.querySelectorAll('.tab').forEach(function(tab) {
     tab.addEventListener('click', function() {
@@ -164,3 +158,4 @@
     });
   });
 </script>
+{% endblock %}
