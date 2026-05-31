@@ -19,7 +19,7 @@
 
 ---
 
-## 🚀 Instalación local
+## Instalación local
 
 ### Requisitos
 
@@ -69,7 +69,7 @@ readers/
 
 ---
 
-## ⚙️ Variables de entorno
+## Variables de entorno
 
 Para producción, creá un archivo `.env` en la raíz con estas variables:
 
@@ -83,7 +83,7 @@ ALLOWED_HOSTS=tudominio.com
 
 ---
 
-## 🗺️ Roadmap
+## Roadmap
 
 - [ ] Modelo de reseñas vinculado a usuario y libro
 - [ ] Lista de lectura personalizada
@@ -94,7 +94,7 @@ ALLOWED_HOSTS=tudominio.com
 
 ---
 
-## 🛠️ Stack
+## Stack
 
 | Tecnología | Uso |
 |------------|-----|
