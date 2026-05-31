@@ -20,8 +20,13 @@ from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
 
+from users.views import RegisterView, profile_view
+
 urlpatterns = [
     path('', include('core.urls')),
     path('books', include('books.urls')),
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/register/', RegisterView.as_view(), name='register'),
+    path('profile/<str:username>/', profile_view, name='profile'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

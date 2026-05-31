@@ -1,0 +1,98 @@
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+<h2 class="sr-only">Landing page y login de Readers, red social de libros</h2>
+
+<div class="page">
+  <div class="left">
+    <div class="left-bg">
+      <svg viewBox="0 0 400 580" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <circle cx="320" cy="80" r="140" fill="#faf7f2"/>
+        <circle cx="50" cy="450" r="100" fill="#faf7f2"/>
+        <circle cx="380" cy="400" r="60" fill="#faf7f2"/>
+      </svg>
+    </div>
+    <div class="logo-mark">
+      <div class="logo-icon"><i class="ti ti-book-2" aria-hidden="true"></i></div>
+      <span class="logo-text">Readers</span>
+    </div>
+    <h1 class="left-tagline">Tu próxima lectura favorita te <em>está esperando.</em></h1>
+    <p class="left-sub">Descubrí libros, compartí reseñas y conectá con lectores que piensan como vos.</p>
+    <div class="book-stack">
+      <div class="book b1"><div class="book-line"></div></div>
+      <div class="book b2"><div class="book-line"></div></div>
+      <div class="book b3"><div class="book-line"></div></div>
+      <div class="book b4"><div class="book-line"></div></div>
+      <div class="book b5"><div class="book-line"></div></div>
+    </div>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-num">12k</div>
+        <div class="stat-label">lectores</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">48k</div>
+        <div class="stat-label">reseñas</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3k</div>
+        <div class="stat-label">clubes</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="login-box">
+      <h2>Iniciá sesión</h2>
+      <p>Continuá tu aventura lectora</p>
+
+      {% if form.errors %}
+      <div class="error-box" style="display:flex;">
+        <i class="ti ti-alert-circle"></i>
+        <span>Usuario o contraseña incorrectos.</span>
+      </div>
+      {% endif %}
+
+      <form method="post">
+        {% csrf_token %}
+        <div class="field">
+          <label for="id_username">Usuario</label>
+          <div class="input-wrap">
+            <i class="ti ti-user"></i>
+            {{ form.username }}
+          </div>
+        </div>
+        <div class="field">
+          <label for="id_password">Contraseña</label>
+          <div class="input-wrap">
+            <i class="ti ti-lock"></i>
+            {{ form.password }}
+          </div>
+        </div>
+        <button class="btn-submit" type="submit">Ingresar</button>
+      </form>
+
+      <div class="divider"><hr/><span>o</span><hr/></div>
+      <a href="{% url 'register' %}"><button class="btn-register">Crear cuenta nueva</button></a>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('tpw').addEventListener('click',function(){
+  var p=document.getElementById('pw');
+  var e=document.getElementById('eye');
+  var show=p.type==='password';
+  p.type=show?'text':'password';
+  e.className=show?'ti ti-eye-off':'ti ti-eye';
+  this.setAttribute('aria-label',show?'Ocultar contraseña':'Mostrar contraseña');
+});
+document.getElementById('btn-in').addEventListener('click',function(){
+  var u=document.getElementById('uname').value.trim();
+  var p=document.getElementById('pw').value;
+  var err=document.getElementById('err');
+  if(!u||!p){err.style.display='flex';return;}
+  err.style.display='none';
+});
+</script>

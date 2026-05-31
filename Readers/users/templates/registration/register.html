@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Readers — Crear cuenta</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+
+<h2 class="sr-only">Formulario de registro para Readers</h2>
+
+<div class="page">
+  <div class="left">
+    <div class="left-bg">
+      <svg viewBox="0 0 400 620" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <circle cx="320" cy="80" r="140" fill="#faf7f2"/>
+        <circle cx="50" cy="500" r="100" fill="#faf7f2"/>
+      </svg>
+    </div>
+    <div class="logo-mark">
+      <div class="logo-icon"><i class="ti ti-book-2" aria-hidden="true"></i></div>
+      <span class="logo-text">Readers</span>
+    </div>
+    <h1 class="left-tagline">Unite a la comunidad <em>lectora.</em></h1>
+    <p class="left-sub">Creá tu cuenta y empezá a descubrir libros con miles de lectores.</p>
+    <div class="perks">
+      <div class="perk"><i class="ti ti-star" aria-hidden="true"></i><span>Reseñas y valoraciones de libros</span></div>
+      <div class="perk"><i class="ti ti-users" aria-hidden="true"></i><span>Clubes de lectura virtuales</span></div>
+      <div class="perk"><i class="ti ti-bookmark" aria-hidden="true"></i><span>Tu lista de lectura personalizada</span></div>
+      <div class="perk"><i class="ti ti-message" aria-hidden="true"></i><span>Debates y recomendaciones</span></div>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="box">
+      <h2>Crear cuenta</h2>
+      <p>Es gratis y siempre lo será</p>
+
+      <form method="post">
+        {% csrf_token %}
+
+        <div class="field">
+          <label for="id_username">Usuario</label>
+          <div class="iw">
+            <i class="ti ti-user ic" aria-hidden="true"></i>
+            {{ form.username }}
+          </div>
+          {% if form.username.errors %}
+            <div class="hint err">{{ form.username.errors.0 }}</div>
+          {% endif %}
+        </div>
+
+        <div class="field">
+          <label for="id_password1">Contraseña</label>
+          <div class="iw">
+            <i class="ti ti-lock ic" aria-hidden="true"></i>
+            {{ form.password1 }}
+            <button class="tpw" id="tpw1" type="button" aria-label="Mostrar contraseña">
+              <i class="ti ti-eye" id="eye1" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="pw-strength">
+            <div class="pw-bar" id="b1"></div>
+            <div class="pw-bar" id="b2"></div>
+            <div class="pw-bar" id="b3"></div>
+          </div>
+          {% if form.password1.errors %}
+            <div class="hint err">{{ form.password1.errors.0 }}</div>
+          {% endif %}
+        </div>
+        {% if form.errors %}
+          <div class="hint err">
+            {% for field in form %}
+              {% for error in field.errors %}
+                <p>{{ field.label }}: {{ error }}</p>
+              {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <div class="field">
+          <label for="id_password2">Confirmá tu contraseña</label>
+          <div class="iw">
+            <i class="ti ti-lock ic" aria-hidden="true"></i>
+            {{ form.password2 }}
+            <button class="tpw" id="tpw2" type="button" aria-label="Mostrar contraseña">
+              <i class="ti ti-eye" id="eye2" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="hint" id="pw2-hint"></div>
+          {% if form.password2.errors %}
+            <div class="hint err">{{ form.password2.errors.0 }}</div>
+          {% endif %}
+        </div>
+
+        <button class="btn-submit" type="submit">Crear cuenta</button>
+      </form>
+
+      <div class="footer-link">¿Ya tenés cuenta? <a href="{% url 'login' %}">Iniciá sesión</a></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function togglePw(inputId, eyeId) {
+    var p = document.getElementById(inputId);
+    var e = document.getElementById(eyeId);
+    var show = p.type === 'password';
+    p.type = show ? 'text' : 'password';
+    e.className = show ? 'ti ti-eye-off' : 'ti ti-eye';
+  }
+
+  document.getElementById('tpw1').addEventListener('click', function () {
+    togglePw('id_password1', 'eye1');
+  });
+
+  document.getElementById('tpw2').addEventListener('click', function () {
+    togglePw('id_password2', 'eye2');
+  });
+
+  document.getElementById('id_password1').addEventListener('input', function () {
+    var v = this.value;
+    var b1 = document.getElementById('b1');
+    var b2 = document.getElementById('b2');
+    var b3 = document.getElementById('b3');
+    b1.className = 'pw-bar'; b2.className = 'pw-bar'; b3.className = 'pw-bar';
+    if (v.length === 0) return;
+    var strong = v.length >= 8 && /[A-Z]/.test(v) && /[0-9]/.test(v);
+    var fair = v.length >= 8;
+    if (strong) {
+      b1.className = 'pw-bar strong'; b2.className = 'pw-bar strong'; b3.className = 'pw-bar strong';
+    } else if (fair) {
+      b1.className = 'pw-bar fair'; b2.className = 'pw-bar fair';
+    } else {
+      b1.className = 'pw-bar weak';
+    }
+  });
+
+  document.getElementById('id_password2').addEventListener('input', function () {
+    var h = document.getElementById('pw2-hint');
+    var p1 = document.getElementById('id_password1').value;
+    if (this.value && this.value !== p1) {
+      h.textContent = 'Las contraseñas no coinciden.';
+      h.className = 'hint err';
+    } else {
+      h.textContent = '';
+      h.className = 'hint';
+    }
+  });
+</script>
+
+</body>
+</html>

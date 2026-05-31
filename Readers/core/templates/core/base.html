@@ -45,6 +45,15 @@
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
               <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
+            {% if user.is_authenticated %}
+              <span class="navbar-text me-2">{{ user.username }}</span>
+              <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger ms-2">Cerrar sesión</button>
+              </form>
+            {% else %}
+              <a href="{% url 'login' %}" class="btn btn-outline-secondary ms-2">Iniciar sesión</a>
+            {% endif %}
           </div>
         </div>
       </nav>
