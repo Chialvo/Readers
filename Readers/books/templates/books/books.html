@@ -1,63 +1,76 @@
 {% extends "core/base.html" %}
 
+{% block extra_head %}
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-<div class="book-container">
-    {% for book in books %}
-    <a href="{% url 'book_detail' book.id %}" class="book-link">
-        <div class="book-card">
 
-            {% if book.cover %}
-                <img src="{{ book.cover.url }}" class="book-cover">
-            {% endif %}
+<div class="library-wrapper">
 
-            <div class="book-info">
-                <h2>{{ book.title }}</h2>
-                <p>{{ book.description }}</p>
+  <header class="library-header">
+    <div class="header-bg"></div>
+    <div class="header-content">
+      <span class="label-tag">Colección</span>
+      <h1 class="library-title">Mi Biblioteca</h1>
+      <p class="library-subtitle">{{ books|length }} libro{% if books|length != 1 %}s{% endif %} en la colección</p>
+    </div>
+  </header>
+
+  <main class="library-main">
+
+    {% if books %}
+    <div class="books-grid">
+      {% for book in books %}
+      <a href="{% url 'book_detail' book.id %}" class="book-card" style="--delay: {{ forloop.counter0 }}">
+
+        <div class="card-cover-wrap">
+          {% if book.cover %}
+            <img src="{{ book.cover.url }}" alt="{{ book.title }}" class="card-cover">
+          {% else %}
+            <div class="card-cover card-cover--placeholder">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              </svg>
             </div>
-
+          {% endif %}
+          <div class="card-cover-shine"></div>
         </div>
-    </a>
-    {% endfor %}
+
+        <div class="card-body">
+          <div class="card-number">{{ forloop.counter|stringformat:"02d" }}</div>
+          <h2 class="card-title">{{ book.title }}</h2>
+          {% if book.description %}
+            <p class="card-desc">{{ book.description|truncatechars:100 }}</p>
+          {% endif %}
+          <div class="card-cta">
+            <span>Ver libro</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </div>
+        </div>
+
+      </a>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+        </svg>
+      </div>
+      <h3>La biblioteca está vacía</h3>
+      <p>Todavía no hay libros cargados en la base de datos.</p>
+    </div>
+    {% endif %}
+
+  </main>
 </div>
 
-<style>
-.book-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.book-card {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 15px;
-
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.book-cover {
-    width: 100px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 5px;
-}
-
-.book-info h2 {
-    margin: 0;
-}
-
-.book-info p {
-    margin-top: 5px;
-    color: #555;
-}
-.book-link {
-    text-decoration: none;
-    color: inherit;
-}
-</style>
 
 {% endblock %}

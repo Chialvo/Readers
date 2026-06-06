@@ -44,43 +44,32 @@
   <div class="content">
  
     <div class="tab-panel active" id="tab-biblioteca">
-      <div class="books-grid">
-        <div class="book-card">
-          <div class="book-cover" style="background:linear-gradient(135deg,#534AB7,#2C2849);">
-            <div class="book-rating"><i class="ti ti-star-filled"></i> 4.5</div>
-          </div>
-          <div class="book-title">Cien años de soledad</div>
-          <div class="book-author">García Márquez</div>
+      {% if starred_books %}
+        <div class="starred-grid">
+          {% for book in starred_books %}
+            <a href="{% url 'book_detail' book.id %}" class="starred-card">
+              <div class="starred-cover">
+                {% if book.cover %}
+                  <img src="{{ book.cover.url }}" alt="{{ book.title }}">
+                {% else %}
+                  <div class="starred-cover-placeholder">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    </svg>
+                  </div>
+                {% endif %}
+              </div>
+              <div class="starred-info">
+                <span class="starred-title">{{ book.title }}</span>
+                <span class="starred-author">{{ book.author }}</span>
+              </div>
+            </a>
+          {% endfor %}
         </div>
-        <div class="book-card">
-          <div class="book-cover" style="background:linear-gradient(135deg,#993C1D,#5C1F0A);">
-            <div class="book-rating"><i class="ti ti-star-filled"></i> 5.0</div>
-          </div>
-          <div class="book-title">El nombre del viento</div>
-          <div class="book-author">Patrick Rothfuss</div>
-        </div>
-        <div class="book-card">
-          <div class="book-cover" style="background:linear-gradient(135deg,#0F6E56,#073D30);">
-            <div class="book-rating"><i class="ti ti-star-filled"></i> 4.0</div>
-          </div>
-          <div class="book-title">1984</div>
-          <div class="book-author">George Orwell</div>
-        </div>
-        <div class="book-card">
-          <div class="book-cover" style="background:linear-gradient(135deg,#BA7517,#6B3F05);">
-            <div class="book-rating"><i class="ti ti-star-filled"></i> 4.2</div>
-          </div>
-          <div class="book-title">Dune</div>
-          <div class="book-author">Frank Herbert</div>
-        </div>
-        <div class="book-card">
-          <div class="book-cover" style="background:linear-gradient(135deg,#993556,#5C1530);">
-            <div class="book-rating"><i class="ti ti-star-filled"></i> 3.8</div>
-          </div>
-          <div class="book-title">Fundación</div>
-          <div class="book-author">Isaac Asimov</div>
-        </div>
-      </div>
+      {% else %}
+        <p class="starred-empty">Todavía no hay libros en la biblioteca.</p>
+      {% endif %}
     </div>
  
     <div class="tab-panel" id="tab-resenas">

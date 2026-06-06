@@ -18,5 +18,6 @@ def profile_view(request, username):
     user = get_object_or_404(User, username=username)
     context = {
         'profile_user': user,
+        'starred_books': user.starred_books.all(),
     }
     return render(request, 'users/profile.html', context)
