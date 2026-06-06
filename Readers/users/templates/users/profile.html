@@ -1,10 +1,10 @@
 {% extends 'core/base.html' %}
 {% load static %}
- 
+
 {% block title %}@{{ profile_user.username }} — Readers{% endblock %}
- 
+
 {% block content %}
- 
+
 <div class="profile-hero">
   <div class="profile-inner">
     <div class="avatar-wrap">
@@ -21,7 +21,7 @@
     </div>
   </div>
 </div>
- 
+
 <div class="stats-bar">
   <div class="stats-inner">
     <div class="stat"><div class="stat-n">34</div><div class="stat-l">Leídos</div></div>
@@ -31,7 +31,7 @@
     <div class="stat"><div class="stat-n">140</div><div class="stat-l">Seguidores</div></div>
   </div>
 </div>
- 
+
 <div style="background:#faf7f2;padding:0 2rem;">
   <div class="tabs">
     <div class="tab active" data-tab="biblioteca">Biblioteca</div>
@@ -39,18 +39,18 @@
     <div class="tab" data-tab="porLeer">Por leer</div>
   </div>
 </div>
- 
+
 <div style="padding:0 2rem;">
   <div class="content">
- 
+
     <div class="tab-panel active" id="tab-biblioteca">
       {% if starred_books %}
         <div class="starred-grid">
           {% for book in starred_books %}
-            <a href="{% url 'book_detail' book.id %}" class="starred-card">
+            <a href="{% url 'book_detail' book.google_books_id %}" class="starred-card">
               <div class="starred-cover">
-                {% if book.cover %}
-                  <img src="{{ book.cover.url }}" alt="{{ book.title }}">
+                {% if book.cover_url %}
+                  <img src="{{ book.cover_url }}" alt="{{ book.title }}">
                 {% else %}
                   <div class="starred-cover-placeholder">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
@@ -71,7 +71,7 @@
         <p class="starred-empty">Todavía no hay libros en la biblioteca.</p>
       {% endif %}
     </div>
- 
+
     <div class="tab-panel" id="tab-resenas">
       <div class="reviews-list">
         <div class="review-card">
@@ -88,54 +88,18 @@
           <div class="review-text">Una obra que te atrapa desde la primera página. El realismo mágico de García Márquez es incomparable, cada personaje tiene una profundidad que pocas novelas logran.</div>
           <div class="review-date">hace 3 días</div>
         </div>
-        <div class="review-card">
-          <div class="review-top">
-            <div class="review-book-cover" style="background:linear-gradient(135deg,#0F6E56,#073D30);border-radius:4px;"></div>
-            <div class="review-meta">
-              <div class="review-book-title">1984</div>
-              <div class="review-book-author">George Orwell</div>
-              <div class="review-stars">
-                <i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i><i class="ti ti-star-filled"></i>
-              </div>
-            </div>
-          </div>
-          <div class="review-text">Imprescindible. Orwell construyó un mundo distópico que hoy se siente más vigente que nunca. Una lectura que te hace pensar durante semanas.</div>
-          <div class="review-date">hace 2 semanas</div>
-        </div>
       </div>
     </div>
- 
+
     <div class="tab-panel" id="tab-porLeer">
-      <div class="books-grid">
-        <div class="book-card">
-          <div class="book-cover" style="background:linear-gradient(135deg,#3A7BD5,#1A3A6E);">
-            <div class="book-rating"><i class="ti ti-bookmark" style="color:#fff;font-size:13px;"></i></div>
-          </div>
-          <div class="book-title">El problema de los tres cuerpos</div>
-          <div class="book-author">Liu Cixin</div>
-        </div>
-        <div class="book-card">
-          <div class="book-cover" style="background:linear-gradient(135deg,#5C7A3E,#2D3D1A);">
-            <div class="book-rating"><i class="ti ti-bookmark" style="color:#fff;font-size:13px;"></i></div>
-          </div>
-          <div class="book-title">Sapiens</div>
-          <div class="book-author">Yuval Noah Harari</div>
-        </div>
-        <div class="book-card">
-          <div class="book-cover" style="background:linear-gradient(135deg,#8B4B8B,#3D1A3D);">
-            <div class="book-rating"><i class="ti ti-bookmark" style="color:#fff;font-size:13px;"></i></div>
-          </div>
-          <div class="book-title">El mapa del caos</div>
-          <div class="book-author">Félix J. Palma</div>
-        </div>
-      </div>
+      <p class="starred-empty">Todavía no hay libros en la lista.</p>
     </div>
- 
+
   </div>
 </div>
- 
+
 {% endblock %}
- 
+
 {% block extra_js %}
 <script>
   document.querySelectorAll('.tab').forEach(function(tab) {
