@@ -1,0 +1,193 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<div class="search-users-wrapper">
+
+  <div class="detail-bg"></div>
+
+  <header class="library-header">
+    <div class="header-bg"></div>
+    <div class="header-content">
+      <span class="label-tag">Comunidad</span>
+      <h1 class="library-title">Buscar lectores</h1>
+      <p class="library-subtitle">
+        {% if query %}{{ results|length }} resultado{% if results|length != 1 %}s{% endif %} para "{{ query }}"
+        {% else %}Buscá lectores por nombre de usuario{% endif %}
+      </p>
+    </div>
+  </header>
+
+  <main class="library-main">
+
+    <form method="get" action="{% url 'search_users' %}" class="user-search-form">
+      <div class="user-search-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="search" name="q" value="{{ query }}" placeholder="Buscar por usuario..." autofocus>
+        <button type="submit">Buscar</button>
+      </div>
+    </form>
+
+    {% if results %}
+      <div class="users-list">
+        {% for u in results %}
+          <a href="{% url 'profile' u.username %}" class="user-row">
+            <div class="user-row-avatar">{{ u.username|first|upper }}</div>
+            <div class="user-row-info">
+              <span class="user-row-name">{{ u.get_full_name|default:u.username }}</span>
+              <span class="user-row-username">@{{ u.username }}</span>
+            </div>
+            <div class="user-row-meta">
+              <span class="user-row-stat">{{ u.followers.count }} seguidores</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+
+    {% elif query %}
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+        </div>
+        <h3>Sin resultados</h3>
+        <p>No se encontraron usuarios para "{{ query }}".</p>
+      </div>
+
+    {% else %}
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <h3>Encontrá lectores</h3>
+        <p>Escribí un nombre de usuario para buscar.</p>
+      </div>
+    {% endif %}
+
+  </main>
+</div>
+
+<style>
+.search-users-wrapper { position: relative; }
+
+.user-search-form { margin-bottom: 32px; }
+
+.user-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  max-width: 500px;
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+.user-search-wrap svg { color: var(--muted); flex-shrink: 0; }
+
+.user-search-wrap input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: transparent;
+}
+
+.user-search-wrap input::placeholder { color: var(--muted); }
+
+.user-search-wrap button {
+  background: var(--amber);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.user-search-wrap button:hover { background: #a86820; }
+
+.users-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 600px;
+}
+
+.user-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 18px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 2px 6px var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: fadeUp 0.4s ease both;
+}
+
+.user-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px var(--shadow);
+}
+
+.user-row-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #D85A30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.user-row-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.user-row-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.user-row-username {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 300;
+}
+
+.user-row-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+</style>
+
+{% endblock %}

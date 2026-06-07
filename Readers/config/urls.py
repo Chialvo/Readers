@@ -29,4 +29,5 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/register/', RegisterView.as_view(), name='register'),
     path('profile/<str:username>/', profile_view, name='profile'),
+    path('users/', include('users.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

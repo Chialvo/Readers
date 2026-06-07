@@ -17,7 +17,26 @@
       <div class="profile-bio">Amante de la ciencia ficción y el realismo mágico. Siempre con un libro en la mano y otro en la lista.</div>
     </div>
     <div class="profile-actions">
-      <button class="btn-edit">Editar perfil</button>
+      {% if request.user.is_authenticated and request.user != profile_user %}
+        <form method="post" action="{% url 'follow_user' profile_user.username %}">
+          {% csrf_token %}
+          <button type="submit" class="btn-follow {% if is_following %}btn-follow--active{% endif %}">
+            {% if is_following %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+              Siguiendo
+            {% else %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>
+              </svg>
+              Seguir
+            {% endif %}
+          </button>
+        </form>
+      {% elif request.user == profile_user %}
+        <button class="btn-edit">Editar perfil</button>
+      {% endif %}
     </div>
   </div>
 </div>
@@ -28,7 +47,8 @@
     <div class="stat"><div class="stat-n">12</div><div class="stat-l">Leyendo</div></div>
     <div class="stat"><div class="stat-n">58</div><div class="stat-l">Por leer</div></div>
     <div class="stat"><div class="stat-n">21</div><div class="stat-l">Reseñas</div></div>
-    <div class="stat"><div class="stat-n">140</div><div class="stat-l">Seguidores</div></div>
+    <div class="stat"><div class="stat-n">{{ followers_count }}</div><div class="stat-l">Seguidores</div></div>
+    <div class="stat"><div class="stat-n">{{ following_count }}</div><div class="stat-l">Siguiendo</div></div>
   </div>
 </div>
 

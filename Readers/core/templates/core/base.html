@@ -43,6 +43,11 @@
               <i class="ti ti-books me-1"></i>Explorar libros
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link readers-link {% block nav_users %}{% endblock %}" href="{% url 'search_users' %}">
+              <i class="ti ti-users me-1"></i>Lectores
+            </a>
+          </li>
         </ul>
  
         <form class="d-flex me-3" role="search" method="get" action="{% url 'books' %}">
@@ -51,6 +56,7 @@
             <input class="form-control search-input" type="search" name="q" placeholder="Buscar libros o lectores..." value="{{ request.GET.q }}">
           </div>
         </form>
+
  
         {% if user.is_authenticated %}
         <div class="dropdown">

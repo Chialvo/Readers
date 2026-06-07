@@ -1120,3 +1120,218 @@ body { background: var(--paper); }
   font-weight: 300;
   padding: 2rem 0;
 }
+
+/* ─── BOOK DETAIL ─────────────────────────────────────── */
+.detail-wrapper {
+  position: relative;
+  min-height: 100vh;
+  font-family: 'DM Sans', sans-serif;
+  padding: 36px 40px 80px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.detail-bg {
+  position: fixed; inset: 0; z-index: -1;
+  background:
+    radial-gradient(ellipse 55% 60% at 90% 20%, rgba(200,131,42,0.10) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 50% at 10% 80%, rgba(200,131,42,0.07) 0%, transparent 60%),
+    repeating-linear-gradient(
+      90deg,
+      transparent, transparent 39px,
+      var(--border) 39px, var(--border) 40px
+    );
+  opacity: 0.55;
+}
+
+.breadcrumb {
+  margin-bottom: 40px;
+  animation: fadeUp 0.4s ease both;
+}
+
+.breadcrumb a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.83rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--amber);
+  text-decoration: none;
+  transition: gap 0.2s ease;
+}
+
+.breadcrumb a:hover { gap: 10px; }
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.detail-cover-col { animation: fadeUp 0.5s 0.05s ease both; }
+
+.cover-frame {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow:
+    -6px 6px 0 var(--border),
+    0 16px 40px var(--shadow);
+}
+
+.cover-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+}
+
+.cover-img--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream);
+  color: var(--border);
+}
+
+.cover-img--placeholder svg { width: 56px; height: 56px; }
+
+.cover-shine {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+.detail-info-col {
+  padding-top: 8px;
+  animation: fadeUp 0.5s 0.12s ease both;
+}
+
+.detail-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  color: var(--ink);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.detail-author {
+  margin-top: 8px;
+  font-size: 1rem;
+  color: var(--muted);
+  font-weight: 300;
+  font-style: italic;
+}
+
+.divider {
+  width: 48px;
+  height: 2px;
+  background: var(--amber);
+  margin: 22px 0 20px;
+  border-radius: 1px;
+}
+
+.detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--muted);
+  background: var(--cream);
+  border: 1px solid var(--border);
+  padding: 5px 12px;
+  border-radius: 20px;
+}
+
+.section-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.detail-desc p {
+  font-size: 0.97rem;
+  color: var(--ink);
+  line-height: 1.8;
+  font-weight: 300;
+}
+
+/* ── Star button ── */
+.star-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 8px 18px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.star-btn:hover {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+.star-btn--active {
+  color: var(--amber);
+  border-color: var(--amber);
+  background: rgba(200, 131, 42, 0.08);
+}
+
+@media (max-width: 640px) {
+  .detail-wrapper { padding: 24px 18px 60px; }
+  .detail-layout { grid-template-columns: 1fr; gap: 32px; }
+  .cover-frame { max-width: 200px; }
+}
+
+/* ─── FOLLOW BUTTON ───────────────────────────────────── */
+.btn-follow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 18px;
+  background: transparent;
+  border: 0.5px solid #888780;
+  border-radius: 7px;
+  font-size: 13px;
+  color: #faf7f2;
+  cursor: pointer;
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  transition: all 0.15s;
+}
+
+.btn-follow:hover {
+  border-color: #faf7f2;
+}
+
+.btn-follow--active {
+  background: rgba(250, 247, 242, 0.1);
+  border-color: #faf7f2;
+}
+
+.btn-follow--active:hover {
+  background: rgba(224, 74, 74, 0.15);
+  border-color: #e04a4a;
+  color: #e04a4a;
+}
