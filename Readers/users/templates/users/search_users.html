@@ -34,7 +34,13 @@
       <div class="users-list">
         {% for u in results %}
           <a href="{% url 'profile' u.username %}" class="user-row">
-            <div class="user-row-avatar">{{ u.username|first|upper }}</div>
+            <div class="user-row-avatar">
+              {% if u.avatar %}
+                <img src="{{ u.avatar.url }}" alt="{{ u.username }}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;">
+              {% else %}
+                {{ u.username|first|upper }}
+              {% endif %}
+            </div>
             <div class="user-row-info">
               <span class="user-row-name">{{ u.get_full_name|default:u.username }}</span>
               <span class="user-row-username">@{{ u.username }}</span>

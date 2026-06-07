@@ -1,0 +1,238 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Editar perfil — Readers{% endblock %}
+
+{% block content %}
+
+<div class="detail-wrapper">
+  <div class="detail-bg"></div>
+
+  <nav class="breadcrumb">
+    <a href="{% url 'profile' request.user.username %}">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Volver al perfil
+    </a>
+  </nav>
+
+  <div class="edit-card">
+    <div class="edit-header">
+      <span class="label-tag">Configuración</span>
+      <h1 class="detail-title">Editar perfil</h1>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="edit-form">
+      {% csrf_token %}
+
+      <!-- Avatar -->
+      <div class="edit-avatar-section">
+        <div class="edit-avatar-preview">
+          {% if request.user.avatar %}
+            <img src="{{ request.user.avatar.url }}" id="avatar-preview" alt="Avatar">
+          {% else %}
+            <div class="avatar" id="avatar-initials">{{ request.user.username|first|upper }}</div>
+          {% endif %}
+        </div>
+        <div class="edit-avatar-info">
+          <label class="edit-file-label" for="{{ form.avatar.id_for_label }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            Subir foto
+          </label>
+          {{ form.avatar }}
+          <p class="edit-file-hint">JPG o PNG. Máximo 2MB.</p>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Campos -->
+      <div class="edit-fields">
+
+        <div class="edit-field-row">
+          <div class="edit-field">
+            <label for="{{ form.first_name.id_for_label }}">Nombre</label>
+            <input type="text" name="first_name" id="{{ form.first_name.id_for_label }}"
+              value="{{ form.first_name.value|default:'' }}" placeholder="Tu nombre">
+          </div>
+          <div class="edit-field">
+            <label for="{{ form.last_name.id_for_label }}">Apellido</label>
+            <input type="text" name="last_name" id="{{ form.last_name.id_for_label }}"
+              value="{{ form.last_name.value|default:'' }}" placeholder="Tu apellido">
+          </div>
+        </div>
+
+        <div class="edit-field">
+          <label for="{{ form.bio.id_for_label }}">Biografía</label>
+          <textarea name="bio" id="{{ form.bio.id_for_label }}"
+            placeholder="Contá algo sobre vos...">{{ form.bio.value|default:'' }}</textarea>
+        </div>
+
+      </div>
+
+      <div class="edit-actions">
+        <button type="submit" class="edit-save-btn">Guardar cambios</button>
+        <a href="{% url 'profile' request.user.username %}" class="edit-cancel-btn">Cancelar</a>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<style>
+.edit-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 36px 40px;
+  max-width: 600px;
+  box-shadow: 0 2px 12px var(--shadow);
+}
+
+.edit-header { margin-bottom: 28px; }
+
+.edit-avatar-section {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.edit-avatar-preview .avatar,
+.edit-avatar-preview img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  font-size: 28px;
+}
+
+.edit-avatar-info { display: flex; flex-direction: column; gap: 6px; }
+
+.edit-file-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.83rem;
+  font-weight: 500;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.edit-file-label:hover { background: var(--border); }
+
+#id_avatar { display: none; }
+
+.edit-file-hint {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 300;
+}
+
+.edit-fields { display: flex; flex-direction: column; gap: 18px; }
+
+.edit-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.edit-field { display: flex; flex-direction: column; gap: 6px; }
+
+.edit-field label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.edit-field input,
+.edit-field textarea {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: var(--ink);
+  background: #fafafa;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 9px 12px;
+  outline: none;
+  transition: border-color 0.2s;
+  resize: none;
+}
+
+.edit-field input:focus,
+.edit-field textarea:focus { border-color: var(--amber); }
+
+.edit-field textarea { min-height: 90px; }
+
+.edit-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.edit-save-btn {
+  padding: 9px 24px;
+  background: var(--amber);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.edit-save-btn:hover { background: #a86820; }
+
+.edit-cancel-btn {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.edit-cancel-btn:hover { color: var(--ink); }
+
+@media (max-width: 520px) {
+  .edit-card { padding: 24px 18px; }
+  .edit-field-row { grid-template-columns: 1fr; }
+}
+</style>
+
+{% block extra_js %}
+<script>
+  document.getElementById('id_avatar').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      const preview = document.getElementById('avatar-preview');
+      const initials = document.getElementById('avatar-initials');
+      if (preview) {
+        preview.src = ev.target.result;
+      } else if (initials) {
+        const img = document.createElement('img');
+        img.src = ev.target.result;
+        img.id = 'avatar-preview';
+        img.className = 'avatar';
+        img.style.objectFit = 'cover';
+        initials.replaceWith(img);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+</script>
+{% endblock %}
+
+{% endblock %}

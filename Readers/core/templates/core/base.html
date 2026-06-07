@@ -5,63 +5,80 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Readers{% endblock %}</title>
- 
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Lato:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/main.css' %}">
-
   {% block extra_head %}{% endblock %}
   {% block extra_css %}{% endblock %}
 </head>
 <body>
- 
-  <nav class="navbar navbar-expand-lg readers-navbar">
-    <div class="container">
- 
-      <a class="navbar-brand readers-brand" href="{% url 'home' %}">
-        <div class="brand-icon">
-          <i class="ti ti-book-2"></i>
-        </div>
-        Readers
-      </a>
- 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Abrir menú">
-        <i class="ti ti-menu-2" style="color:#faf7f2;font-size:20px;"></i>
-      </button>
- 
-      <div class="collapse navbar-collapse" id="navbarMain">
- 
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link readers-link {% block nav_home %}{% endblock %}" href="{% url 'home' %}">
-              <i class="ti ti-home me-1"></i>Home
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link readers-link {% block nav_books %}{% endblock %}" href="{% url 'books' %}">
-              <i class="ti ti-books me-1"></i>Explorar libros
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link readers-link {% block nav_users %}{% endblock %}" href="{% url 'search_users' %}">
-              <i class="ti ti-users me-1"></i>Lectores
-            </a>
-          </li>
-        </ul>
- 
-        <form class="d-flex me-3" role="search" method="get" action="{% url 'books' %}">
-          <div class="search-wrap">
-            <i class="ti ti-search search-icon"></i>
-            <input class="form-control search-input" type="search" name="q" placeholder="Buscar libros o lectores..." value="{{ request.GET.q }}">
-          </div>
-        </form>
 
- 
-        {% if user.is_authenticated %}
-        <div class="dropdown">
-          <div class="nav-avatar" data-bs-toggle="dropdown" aria-expanded="false" role="button" aria-label="Menú de usuario">
-            {{ user.username|first|upper }}
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <nav class="sidebar" aria-label="Navegación principal">
+    <div class="sidebar-brand">
+      <a href="{% url 'home' %}" class="brand-dot">
+        <i class="ti ti-book-2" aria-hidden="true"></i>
+      </a>
+      <a href="{% url 'home' %}" class="brand-name">Readers</a>
+    </div>
+
+    <a href="{% url 'home' %}" class="nav-item {% block nav_home %}{% endblock %}">
+      <i class="ti ti-home" aria-hidden="true"></i>
+      <span class="nav-label">Inicio</span>
+    </a>
+    <a href="{% url 'books' %}" class="nav-item {% block nav_books %}{% endblock %}">
+      <i class="ti ti-books" aria-hidden="true"></i>
+      <span class="nav-label">Explorar libros</span>
+    </a>
+    <a href="{% url 'search_users' %}" class="nav-item {% block nav_users %}{% endblock %}">
+      <i class="ti ti-users" aria-hidden="true"></i>
+      <span class="nav-label">Lectores</span>
+    </a>
+
+    <div class="nav-spacer"></div>
+    <div class="nav-divider"></div>
+
+    {% if user.is_authenticated %}
+      <a href="{% url 'profile' user.username %}" class="nav-item">
+        <i class="ti ti-user-circle" aria-hidden="true"></i>
+        <span class="nav-label">Mi perfil</span>
+      </a>
+      <form method="post" action="{% url 'logout' %}" style="width:100%;">
+        {% csrf_token %}
+        <button type="submit" class="nav-item nav-item--btn nav-item--danger">
+          <i class="ti ti-logout" aria-hidden="true"></i>
+          <span class="nav-label">Cerrar sesión</span>
+        </button>
+      </form>
+    {% else %}
+      <a href="{% url 'login' %}" class="nav-item" style="margin-bottom:8px;">
+        <i class="ti ti-login" aria-hidden="true"></i>
+        <span class="nav-label">Iniciar sesión</span>
+      </a>
+    {% endif %}
+  </nav>
+
+  <!-- Right column -->
+  <div class="right-col">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <form class="topbar-search" role="search" method="get" action="{% url 'books' %}">
+        <i class="ti ti-search" aria-hidden="true"></i>
+        <input type="search" name="q" placeholder="Buscar libros..." value="{{ request.GET.q }}">
+      </form>
+
+      {% if user.is_authenticated %}
+        <div class="dropdown ms-auto">
+          <div class="topbar-avatar" data-bs-toggle="dropdown" aria-expanded="false" role="button" aria-label="Menú de usuario">
+            {% if user.avatar %}
+              <img src="{{ user.avatar.url }}" alt="{{ user.username }}">
+            {% else %}
+              {{ user.username|first|upper }}
+            {% endif %}
           </div>
           <ul class="dropdown-menu dropdown-menu-end readers-dropdown">
             <li>
@@ -76,6 +93,11 @@
                 <i class="ti ti-user me-2"></i>Mi perfil
               </a>
             </li>
+            <li>
+              <a class="dropdown-item readers-dropdown-item" href="{% url 'edit_profile' %}">
+                <i class="ti ti-settings me-2"></i>Configuración
+              </a>
+            </li>
             <li><hr class="dropdown-divider"></li>
             <li>
               <form method="post" action="{% url 'logout' %}">
@@ -87,29 +109,19 @@
             </li>
           </ul>
         </div>
-        {% else %}
-        <a href="{% url 'login' %}" class="btn readers-btn-login">Iniciar sesión</a>
-        {% endif %}
- 
-      </div>
-    </div>
-  </nav>
- 
-  <main class="readers-main">
-    {% block content %}{% endblock %}
-  </main>
- 
-  <footer class="readers-footer">
-    <div class="container">
-      <div class="footer-inner">
-        <span class="footer-brand"><i class="ti ti-book-2 me-1"></i>Readers</span>
-        <span class="footer-copy">© 2026 Readers. Todos los derechos reservados.</span>
-      </div>
-    </div>
-  </footer>
- 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
- 
-  {% block extra_js %}{% endblock %}
+      {% endif %}
+    </header>
+
+    <!-- Main content -->
+    <main class="readers-main">
+      {% block content %}{% endblock %}
+    </main>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% block extra_js %}{% endblock %}
+
 </body>
 </html>

@@ -1,9 +1,91 @@
-{% extends "core/base.html" %}
+{% extends 'core/base.html' %}
+{% load static %}
 
-{% block title %}Readers{% endblock %}
+{% block title %}Inicio — Readers{% endblock %}
 
-{% block nav_home %}active{% endblock %}  {# resalta el link activo #}
 {% block content %}
-<h1>Bienvenido</h1>
-<p>Esta es tu home</p>
+
+<div class="home-wrapper">
+
+  <!-- Hero -->
+  <section class="home-hero">
+    <div class="home-hero-bg"></div>
+    <div class="home-hero-content">
+      <span class="label-tag">Bienvenido</span>
+      <h1 class="home-hero-title">Hola, {{ request.user.get_full_name|default:request.user.username }} 👋</h1>
+      <p class="home-hero-sub">¿Qué estás leyendo hoy?</p>
+    </div>
+  </section>
+
+  <div class="home-body">
+
+    <!-- Stats rápidas -->
+    <div class="home-stats">
+      <div class="home-stat">
+        <div class="home-stat-n">{{ books_read }}</div>
+        <div class="home-stat-l">Leídos</div>
+      </div>
+      <div class="home-stat">
+        <div class="home-stat-n">{{ books_reading }}</div>
+        <div class="home-stat-l">Leyendo</div>
+      </div>
+      <div class="home-stat">
+        <div class="home-stat-n">{{ books_want }}</div>
+        <div class="home-stat-l">Por leer</div>
+      </div>
+      <div class="home-stat">
+        <div class="home-stat-n">{{ following_count }}</div>
+        <div class="home-stat-l">Siguiendo</div>
+      </div>
+    </div>
+
+    <!-- Leyendo ahora -->
+    {% if current_books %}
+    <section class="home-section">
+      <h2 class="home-section-title">Leyendo ahora</h2>
+      <div class="home-books-row">
+        {% for ub in current_books %}
+          <a href="{% url 'book_detail' ub.book.google_books_id %}" class="home-book-card">
+            <div class="home-book-cover">
+              {% if ub.book.cover_url %}
+                <img src="{{ ub.book.cover_url }}" alt="{{ ub.book.title }}">
+              {% else %}
+                <div class="home-book-cover-placeholder">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                  </svg>
+                </div>
+              {% endif %}
+            </div>
+            <div class="home-book-info">
+              <span class="home-book-title">{{ ub.book.title }}</span>
+              <span class="home-book-author">{{ ub.book.author }}</span>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- Feed social (próximamente) -->
+    <section class="home-section">
+      <h2 class="home-section-title">Actividad de personas que seguís</h2>
+      <div class="home-feed-empty">
+        <div class="home-feed-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <p>Próximamente verás aquí lo que los lectores que seguís están leyendo y valorando.</p>
+        <a href="{% url 'search_users' %}" class="home-find-btn">Encontrá lectores</a>
+      </div>
+    </section>
+
+  </div>
+
+</div>
+
+
 {% endblock %}

@@ -52,6 +52,16 @@
         </div>
 
         <div class="field">
+          <label for="id_email">Email</label>
+          <div class="iw">
+            <i class="ti ti-mail ic" aria-hidden="true"></i>
+            {{ form.email }}
+          </div>
+          {% if form.email.errors %}
+            <div class="hint err">{{ form.email.errors.0 }}</div>
+          {% endif %}
+        </div>
+        <div class="field">
           <label for="id_password1">Contraseña</label>
           <div class="iw">
             <i class="ti ti-lock ic" aria-hidden="true"></i>
