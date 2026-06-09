@@ -7,7 +7,7 @@
   <div class="detail-bg"></div>
 
   <nav class="breadcrumb">
-    <a href="{% url 'books' %}">
+    <a href="{% url 'library' %}">
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M19 12H5M12 19l-7-7 7-7"/>
       </svg>
@@ -63,9 +63,9 @@
         {% endif %}
         {% if user_book %}
           <div class="meta-pill meta-pill--status">
-            {% if user_book.status == 'want' %}📚 Quiero leer
-            {% elif user_book.status == 'reading' %}📖 Leyendo
-            {% elif user_book.status == 'read' %}✅ Leído
+            {% if user_book.status == 'want' %}Quiero leer
+            {% elif user_book.status == 'reading' %}Leyendo
+            {% elif user_book.status == 'read' %}Leído
             {% endif %}
             {% if user_book.rating %}
               · {{ user_book.rating }}★
@@ -78,7 +78,6 @@
       <div class="status-section">
 
         {% if not user_book or user_book.status != 'read' %}
-        <!-- Botones de estado rápido -->
         <div class="status-btns">
           <form method="post" action="{% url 'update_status' book.google_books_id %}">
             {% csrf_token %}
@@ -99,7 +98,6 @@
         </div>
         {% endif %}
 
-        <!-- Marcar como leído con puntuación -->
         <div class="read-section">
           {% if user_book and user_book.status == 'read' %}
             <div class="read-done">
@@ -137,7 +135,9 @@
       {% if data.description %}
         <div class="detail-desc">
           <h2 class="section-label">Descripción</h2>
-          <p>{{ data.description }}</p>
+          <div class="description-content">
+              {{ data.description|safe }}
+          </div>
         </div>
       {% endif %}
 
