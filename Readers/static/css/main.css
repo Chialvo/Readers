@@ -420,3 +420,39 @@ body { min-height: 100vh; background: #faf7f2; font-family: 'Lato', sans-serif; 
   .lib-stat { min-width: 50%; border-bottom: 1px solid var(--border); }
   .lib-grid { grid-template-columns: 1fr; }
 }
+
+/* ─── AUTH MOBILE LOGO ────────────────────────────────── */
+.auth-mobile-logo {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 2rem;
+}
+
+/* ─── RESPONSIVE: LOGIN / REGISTER ───────────────────── */
+@media (max-width: 768px) {
+  .page {
+    flex-direction: column;
+  }
+
+  .left {
+    display: none;
+  }
+
+  .right {
+    padding: 2.5rem 1.5rem 3rem;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-height: 100vh;
+  }
+
+  .auth-mobile-logo {
+    display: flex;
+  }
+
+  .login-box,
+  .box {
+    max-width: 100%;
+    width: 100%;
+  }
+}
