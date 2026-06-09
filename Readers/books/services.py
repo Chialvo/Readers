@@ -21,6 +21,7 @@ def search_books(query):
             "pages":       info.get("pageCount"),
             "published":   info.get("publishedDate", "")[:4],
             "description": info.get("description", ""),
+            "genres":      info.get("categories", []),
         })
     return books
 
@@ -38,4 +39,5 @@ def get_book_detail(google_books_id):
         "pages":       info.get("pageCount"),
         "published":   info.get("publishedDate", "")[:4],
         "description": info.get("description", ""),
+        "genres":      info.get("categories", []),
     }

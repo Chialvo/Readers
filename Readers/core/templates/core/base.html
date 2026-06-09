@@ -37,6 +37,10 @@
       <i class="ti ti-users" aria-hidden="true"></i>
       <span class="nav-label">Lectores</span>
     </a>
+    <a href="{% url 'library' %}" class="nav-item {% block nav_library %}{% endblock %}">
+      <i class="ti ti-bookmark" aria-hidden="true"></i>
+      <span class="nav-label">Mi biblioteca</span>
+    </a>
 
     <div class="nav-spacer"></div>
     <div class="nav-divider"></div>
