@@ -96,5 +96,3 @@ dist/
 
 Pipfile.lock
 Pipfile
-
-.env
