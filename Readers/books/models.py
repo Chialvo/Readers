@@ -11,7 +11,7 @@ class Book(models.Model):
     google_books_id = models.CharField(max_length=50, unique=True)
     title           = models.CharField(max_length=500)
     author          = models.CharField(max_length=500, blank=True)
-    cover_url       = models.URLField(blank=True)
+    cover_url       = models.URLField(blank=True, max_length=1000)
     genres          = models.ManyToManyField(Genre, blank=True)
 
     def __str__(self):
