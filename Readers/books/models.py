@@ -9,8 +9,8 @@ class Genre(models.Model):
 
 class Book(models.Model):
     google_books_id = models.CharField(max_length=50, unique=True)
-    title           = models.CharField(max_length=200)
-    author          = models.CharField(max_length=200, blank=True)
+    title           = models.CharField(max_length=500)
+    author          = models.CharField(max_length=500, blank=True)
     cover_url       = models.URLField(blank=True)
     genres          = models.ManyToManyField(Genre, blank=True)
 
